@@ -20,6 +20,8 @@ AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
 #include <AdafruitIO.h>  // Adafruit IO library
 #include <Adafruit_MQTT.h> // Adafruit MQTT library
 
+AdafruitIO_Feed *myWeight = io.feed("my-weight"); // set up the 'iot scale' feed
+
 int relay_pin = D5;
 
 void setup() {
@@ -28,6 +30,12 @@ void setup() {
   // connect to io.adafruit.com
   Serial.print("Connecting to Adafruit IO");
   io.connect();
+    
+  // set up a message handler for the 'my weight' feed.
+  // the handleMessage function (defined below)
+  // will be called whenever a message is
+  // received from adafruit io.
+  myWeight->onMessage(handleMessage);
 
   // wait for a connection
   while(io.status() < AIO_CONNECTED) {
@@ -51,16 +59,14 @@ void loop() {
   io.run();
   
   // put your main code here, to run repeatedly:
-  Serial.println("relay on");
-   digitalWrite( relay_pin , HIGH);
-   delay(5000);
-   digitalWrite(relay_pin , LOW);
-   Serial.println("power off");
-   delay(5000);
+//  Serial.println("relay on");
+//   digitalWrite( relay_pin , HIGH);
+//   delay(5000);
+//   digitalWrite(relay_pin , LOW);
+//   Serial.println("power off");
+//   delay(5000);
 }
 
 void handleMessage(AdafruitIO_Data *data) {
-Serial.printf("\nreceived <- %s", data->value());
-  if (!strcmp(data->value(), "OPEN")) {
-    Serial.printf("\nIt worked!");
-  }}
+  Serial.printf("\nreceived <- %s", data->value());
+}
