@@ -17,8 +17,6 @@
 //
 // All text above must be included in any redistribution.
 #include "keys.h"
-
-
 /************************ Adafruit IO Configuration *******************************/
 
 // visit io.adafruit.com if you need to create an account,
@@ -44,7 +42,7 @@ AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
 #include <HX711.h>  // HX711 library for the scla
 #include "DFRobot_HT1632C.h" // Library for DFRobot LED matrix display
 
-#define calibration_factor -21700.0 //-7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
+#define calibration_factor -41700.0 //-7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
 
 #define DOUT 0  // Pin connected to HX711 data output pin
 #define CLK  12  // Pin connected to HX711 clk pin
@@ -104,10 +102,10 @@ void setup() {
   ESP.wdtFeed();
   ht1632c.print("connected...",50);
 
-    myWeight->save("test4");
+  scale.begin(DOUT, CLK); //esp specific statment 
 
- // scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
- // scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
+  scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
+  scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
 }
 
 void loop() {
@@ -130,6 +128,8 @@ void loop() {
       delay(100);
       weight = scale.get_units();
       avgweight = avgweight + weight;
+      
+  Serial.println(weight);
       if (abs(weight - weight0) > THRESHOLD1) {
         avgweight = 0;
         i = 0;
@@ -137,11 +137,12 @@ void loop() {
       weight0 = weight;
     }
     avgweight = avgweight / NUM_MEASUREMENTS; // Calculate average weight
-    
+
+    avgweight = (avgweight - 194.93)/(-0.219);
     Serial.print("Measured weight: ");
     Serial.print(avgweight, 1);
-    Serial.println(" kg");
-    
+    Serial.println(" lb");
+
     char result[8]; // Buffer big enough for 7-character float
     dtostrf(avgweight, 6, 1, result);
     ht1632c.print(result);  // Display on LED matrix
@@ -162,7 +163,4 @@ void loop() {
 }
 
 void handleMessage(AdafruitIO_Data *data) {
-Serial.printf("\nreceived <- %s", data->value());
-  if (!strcmp(data->value(), "OPEN")) {
-    Serial.printf("\nIt worked!");
-  }}
+}

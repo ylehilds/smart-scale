@@ -8,12 +8,12 @@
 #include <HX711.h>  // HX711 library for the scla
 #include "DFRobot_HT1632C.h" // Library for DFRobot LED matrix display
 
-#define calibration_factor -21700.0 //-7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
+#define calibration_factor -28500.0 // -21700.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
 
 #define DOUT 0  // Pin connected to HX711 data output pin
 #define CLK  12  // Pin connected to HX711 clk pin
 
-#define NUM_MEASUREMENTS 5 // Number of measurements
+#define NUM_MEASUREMENTS 20 // Number of measurements
 #define THRESHOLD 2      // Measures only if the weight is greater than 2 kg. Convert this value to pounds if you're not using SI units.
 #define THRESHOLD1 0.5  // Restart averaging if the weight changes more than 0.5 kg.
 
@@ -29,7 +29,7 @@ float weight = 0.0;
 float prev_weight = 0.0;
 
 
-const char* server = "192.168.1.101";                           // Raspberry Pi running mosquitto mqtt
+const char* server = "172.20.10.7";                           // Raspberry Pi running mosquitto mqtt
 String macAddr = WiFi.macAddress();                           // Store arduino MAC address as a string
 String host = "arduinoSmartScale-" + macAddr.substring(15) ;  // Set a client ID for this device (should not match other MQTT devices)
 
@@ -82,10 +82,10 @@ void setup()
 }
 
 void loop() {
-  if (!mqttClient.connected()) {
-    reconnect();
-  }
-  mqttClient.loop();                    // Loop to check for new messages
+//  if (!mqttClient.connected()) {
+//    reconnect();
+//  }
+//  mqttClient.loop();                    // Loop to check for new messages
 
 
   ht1632c.clearScreen();
