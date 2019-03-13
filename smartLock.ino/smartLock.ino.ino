@@ -24,7 +24,7 @@ AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
 
 AdafruitIO_Feed *myGoal = io.feed("my-goal"); // set up the 'iot scale' feed
 
-int relay_pin = D5;
+#define relayPin D5
 
 void setup() {
     Serial.begin(115200);
@@ -49,8 +49,8 @@ void setup() {
   Serial.println(io.statusText());
   
   // put your setup code here, to run once:
-   pinMode( relay_pin , OUTPUT);
-  
+   pinMode( relayPin , OUTPUT);
+   //digitalWrite(relayPin, LOW);
 }
 
 void loop() {
@@ -63,7 +63,7 @@ void loop() {
 //float f = 0.0;
 
 //      myGoal->save(f);
-      delay(2000);
+      delay(400);
   
   // put your main code here, to run repeatedly:
 //  Serial.println("relay on");
@@ -83,11 +83,23 @@ void handleMessage(AdafruitIO_Data *data) {
     
   JsonObject& root = jsonBuffer.parseObject(data->value());  // Parse to JSON format
   
-  const String dataWeight = root["weight"];
-  Serial.print("dataWeight: ");
-  Serial.println(dataWeight);
+//  const String dataWeight = root["weight"];
+//  Serial.print("dataWeight: ");
+//  Serial.println(dataWeight);
+//
+//  const String goalDate = root["goalDate"];
+//  Serial.print("goalDate: ");
+//  Serial.println(goalDate);
 
-  const String goalDate = root["goalDate"];
-  Serial.print("goalDate: ");
-  Serial.println(goalDate);
+  const String goalAchieved = root["goal_achieved"];
+  Serial.print("\ngoalAchieved: ");
+  Serial.println(goalAchieved);
+
+  if (strcmp(root["goal_achieved"], "true") == 0) {
+      Serial.println("Unlock Reward Box!!!");
+      digitalWrite(relayPin, HIGH); //Set the pin to HIGH (3.3V)
+  }
+  else {
+      Serial.println("Keep Reward Box Locked!!!");
+  }
 }
