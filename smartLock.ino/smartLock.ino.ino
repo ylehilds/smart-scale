@@ -76,11 +76,7 @@ void loop() {
 
 void handleMessage(AdafruitIO_Data *data) {
   Serial.printf("\nreceived <- %s", data->value());
-
   StaticJsonBuffer<200> jsonBuffer;
-    JsonObject& jsonObj = jsonBuffer.createObject();
-    char JSONmessageBuffer[200];
-    
   JsonObject& root = jsonBuffer.parseObject(data->value());  // Parse to JSON format
   
 //  const String dataWeight = root["weight"];
@@ -100,7 +96,7 @@ void handleMessage(AdafruitIO_Data *data) {
       digitalWrite(relayPin, HIGH); //Set the pin to HIGH (3.3V)
   }
   else {
-      Serial.println("Keep Reward Box Locked!!!");
+      Serial.println("Lock Reward Box!!!");
       digitalWrite(relayPin, LOW); //Set the pin to HIGH (3.3V)
   }
 }
