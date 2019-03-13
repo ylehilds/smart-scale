@@ -163,4 +163,7 @@ void loop() {
 }
 
 void handleMessage(AdafruitIO_Data *data) {
-}
+Serial.printf("\nreceived <- %s", data->value());
+  if (!strcmp(data->value(), "OPEN")) {
+    Serial.printf("\nIt worked!");
+  }}
