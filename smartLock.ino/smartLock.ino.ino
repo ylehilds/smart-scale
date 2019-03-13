@@ -101,5 +101,6 @@ void handleMessage(AdafruitIO_Data *data) {
   }
   else {
       Serial.println("Keep Reward Box Locked!!!");
+      digitalWrite(relayPin, LOW); //Set the pin to HIGH (3.3V)
   }
 }
