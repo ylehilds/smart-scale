@@ -19,8 +19,10 @@ AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
 #include <ESP8266WiFi.h> // ESP8266 library
 #include <AdafruitIO.h>  // Adafruit IO library
 #include <Adafruit_MQTT.h> // Adafruit MQTT library
+#include <ArduinoJson.h>
 
-AdafruitIO_Feed *myWeight = io.feed("my-weight"); // set up the 'iot scale' feed
+
+AdafruitIO_Feed *myGoal = io.feed("my-goal"); // set up the 'iot scale' feed
 
 int relay_pin = D5;
 
@@ -35,7 +37,7 @@ void setup() {
   // the handleMessage function (defined below)
   // will be called whenever a message is
   // received from adafruit io.
-  myWeight->onMessage(handleMessage);
+  myGoal->onMessage(handleMessage);
 
   // wait for a connection
   while(io.status() < AIO_CONNECTED) {
@@ -58,9 +60,9 @@ void loop() {
   // io.adafruit.com, and processes any incoming data.
   io.run();
 
-float f = 0.0;
+//float f = 0.0;
 
-      myWeight->save(f);
+//      myGoal->save(f);
       delay(2000);
   
   // put your main code here, to run repeatedly:
@@ -74,4 +76,18 @@ float f = 0.0;
 
 void handleMessage(AdafruitIO_Data *data) {
   Serial.printf("\nreceived <- %s", data->value());
+
+  StaticJsonBuffer<200> jsonBuffer;
+    JsonObject& jsonObj = jsonBuffer.createObject();
+    char JSONmessageBuffer[200];
+    
+  JsonObject& root = jsonBuffer.parseObject(data->value());  // Parse to JSON format
+  
+  const String dataWeight = root["weight"];
+  Serial.print("dataWeight: ");
+  Serial.println(dataWeight);
+
+  const String goalDate = root["goalDate"];
+  Serial.print("goalDate: ");
+  Serial.println(goalDate);
 }
