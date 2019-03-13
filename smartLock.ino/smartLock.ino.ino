@@ -57,6 +57,11 @@ void loop() {
   // function. it keeps the client connected to
   // io.adafruit.com, and processes any incoming data.
   io.run();
+
+float f = 0.0;
+
+      myWeight->save(f);
+      delay(2000);
   
   // put your main code here, to run repeatedly:
 //  Serial.println("relay on");
