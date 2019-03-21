@@ -57,7 +57,7 @@ AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
 
 DFRobot_HT1632C ht1632c = DFRobot_HT1632C(DATA, WR,CS); // set up LED matrix display
 
-AdafruitIO_Feed *myWeight = io.feed("my-weight"); // set up the 'iot scale' feed
+AdafruitIO_Feed *myWeight = io.feed("myweight"); // set up the 'iot scale' feed
 
 HX711 scale(DOUT, CLK);
 
