@@ -24,10 +24,10 @@ AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
 
 AdafruitIO_Feed *myGoal = io.feed("my-goal"); // set up the 'iot scale' feed
 
-#define relayPin D5
+#define relayPin D1
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
 
   // connect to io.adafruit.com
   Serial.print("Connecting to Adafruit IO");
@@ -50,7 +50,7 @@ void setup() {
   
   // put your setup code here, to run once:
    pinMode( relayPin , OUTPUT);
-   digitalWrite(relayPin, HIGH);
+   digitalWrite(relayPin, LOW);
 }
 
 void loop() {
@@ -67,9 +67,9 @@ void loop() {
   
   // put your main code here, to run repeatedly:
 //  Serial.println("relay on");
-//   digitalWrite( relay_pin , HIGH);
+//   digitalWrite( relayPin , HIGH);
 //   delay(5000);
-//   digitalWrite(relay_pin , LOW);
+//   digitalWrite(relayPin , LOW);
 //   Serial.println("power off");
 //   delay(5000);
 }
@@ -93,10 +93,10 @@ void handleMessage(AdafruitIO_Data *data) {
 
   if (strcmp(root["goal_achieved"], "true") == 0) {
       Serial.println("Unlock Reward Box!!!");
-      digitalWrite(relayPin, LOW); //Set the pin to HIGH (3.3V)
+      digitalWrite(relayPin, HIGH); //Set the pin to HIGH (3.3V)
   }
   else {
       Serial.println("Lock Reward Box!!!");
-      digitalWrite(relayPin, HIGH); //Set the pin to HIGH (3.3V)
+      digitalWrite(relayPin, LOW); //Set the pin to HIGH (3.3V)
   }
 }
