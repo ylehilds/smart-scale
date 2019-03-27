@@ -94,6 +94,8 @@ void handleMessage(AdafruitIO_Data *data) {
   if (strcmp(root["goal_achieved"], "true") == 0) {
       Serial.println("Unlock Reward Box!!!");
       digitalWrite(relayPin, HIGH); //Set the pin to HIGH (3.3V)
+      delay(5000);
+      digitalWrite(relayPin, LOW); //Set the pin to HIGH (3.3V)
   }
   else {
       Serial.println("Lock Reward Box!!!");
