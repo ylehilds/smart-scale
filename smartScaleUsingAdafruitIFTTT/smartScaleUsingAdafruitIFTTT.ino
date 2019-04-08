@@ -102,6 +102,7 @@ void setup() {
   Serial.println(io.statusText());
   ESP.wdtFeed();
   ht1632c.print("connected...",50);
+  ht1632c.print("step on the scale...",50);
 
   scale.begin(DOUT, CLK); //esp specific statment 
 
@@ -125,7 +126,7 @@ void loop() {
   float avgweight = 0;
 
   if (weight > MINWEIGHT && weight < MAXWEIGHT) { // Takes measures if the weight is greater than the threshold
-    ht1632c.print("Hello");  // Display on LED matrix
+    ht1632c.print("weighting...", 50);  // Display on LED matrix
       float weight0 = scale.get_units();
     for (int i = 0; i < NUM_MEASUREMENTS; i++) {  // Takes several measurements
       delay(100);
@@ -151,7 +152,6 @@ void loop() {
     if (avgweight > MINWEIGHT && avgweight < MAXWEIGHT) {
       char result[8]; // Buffer big enough for 7-character float
       dtostrf(avgweight, 6, 1, result);
-      ht1632c.clearScreen();
       ht1632c.print(result);  // Display on LED matrix
       //save myWeight to Adafruit.io
       myWeight->save(avgweight);      
