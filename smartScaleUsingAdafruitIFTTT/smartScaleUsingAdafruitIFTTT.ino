@@ -151,6 +151,7 @@ void loop() {
     if (avgweight > MINWEIGHT && avgweight < MAXWEIGHT) {
       char result[8]; // Buffer big enough for 7-character float
       dtostrf(avgweight, 6, 1, result);
+      ht1632c.clearScreen();
       ht1632c.print(result);  // Display on LED matrix
       //save myWeight to Adafruit.io
       myWeight->save(avgweight);      
