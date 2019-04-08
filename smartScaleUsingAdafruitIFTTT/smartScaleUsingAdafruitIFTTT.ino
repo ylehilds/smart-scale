@@ -126,7 +126,7 @@ void loop() {
   float avgweight = 0;
 
   if (weight > MINWEIGHT && weight < MAXWEIGHT) { // Takes measures if the weight is greater than the threshold
-    ht1632c.print("weighting...", 50);  // Display on LED matrix
+    ht1632c.print("weighing...", 50);  // Display on LED matrix
       float weight0 = scale.get_units();
     for (int i = 0; i < NUM_MEASUREMENTS; i++) {  // Takes several measurements
       delay(100);
